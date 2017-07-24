@@ -28,52 +28,51 @@
                 <div class="row">
 
                     <div class="col-lg-6">
-                        {!! Form::open(['route' => 'inventaris.store', 'files' => true]) !!}
-
+                        {!! Form::model($inventaris, ['route' => ['inventaris.update', $inventaris], 'method'=>'patch', 'files' => true]) !!}
                             <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                             <div class="form-group">
                                 <label>KODE BARANG</label>
-                                <input class="form-control" required="true" name="kode_barang">
+                                <input class="form-control" required="true" name="kode_barang" value="{{$inventaris->kode_barang}}">
                                 <p class="help-block">Contoh: 3.05.02.01.003</p>
                             </div>
                             <div class="form-group">
                                 <label>NAMA BARANG</label>
-                                <input class="form-control" required="true" name="nama_barang">
+                                <input class="form-control" required="true" name="nama_barang" value="{{$inventaris->nama_barang}}">
                                 <p class="help-block">Contoh: kursi</p>
                             </div>
                             <div class="form-group">
                                 <label>MERK/TYPE</label>
-                                <input class="form-control" required="true" name="merk_barang">
+                                <input class="form-control" required="true" name="merk_barang" value="{{$inventaris->merk_barang}}">
                                 <p class="help-block">Contoh: Lokal</p>
                             </div>
                             <div class="form-group">
                                 <label>TAHUN PEMBUATAN/PEMBELIAN</label>
-                                <input class="form-control" required="true" name="tahun_barang">
+                                <input class="form-control" required="true" name="tahun_barang" value="{{$inventaris->tahun_barang}}">
                                 <p class="help-block">Contoh: 2004</p>
                             </div>
                             <div class="form-group">
                                 <label>HARGA SATUAN(Rp.)</label>
-                                <input type="text" class="form-control" required="true" id="harga_satuan" name="harga_satuan">
+                                <input type="text" class="form-control" required="true" id="harga_satuan" name="harga_satuan" value="{{$inventaris->harga_satuan}}">
                                 <p class="help-block">Contoh: 40000</p>
                             </div>
                             <div class="form-group">
                                 <label>JUMLAH BARANG</label>
-                                <input type="text" class="form-control" required="true" id="jumlah_barang" name="jumlah_barang">
+                                <input type="text" class="form-control" required="true" id="jumlah_barang" name="jumlah_barang" value="{{$inventaris->jumlah_barang}}">
                                 <p class="help-block">Contoh: 4</p>
                             </div>
                             <div class="form-group">
                                 <label>SATUAN</label>
-                                <input class="form-control" required="true" name="satuan">
+                                <input class="form-control" required="true" name="satuan" value="{{$inventaris->satuan}}">
                                 <p class="help-block">Contoh: buah atau set</p>
                             </div>
                             <div class="form-group">
                                 <label>JUMLAH HARGA(Rp.)</label>
-                                <input type="text" class="form-control" id="result" required="true" name="jumlah_harga">
+                                <input type="text" class="form-control" id="result" required="true" name="jumlah_harga" value="{{$inventaris->jumlah_harga}}">
                                 <p class="help-block" style="color: red">*Count By System</p>
                             </div>
                             <div class="form-group">
                                 <label>SUMBER DANA</label>
-                                <input class="form-control" required="true" name="sumber_dana">
+                                <input class="form-control" required="true" name="sumber_dana" value="{{$inventaris->sumber_dana}}">
                                 <p class="help-block">Contoh: DM</p>
                             </div>
 
@@ -82,45 +81,45 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>B</label>
-                                        <input class="form-control"  name="b" value="">
+                                        <input class="form-control"  name="b" value="{{$inventaris->B}}">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>RR</label>
-                                        <input class="form-control" name="rr" value="">
+                                        <input class="form-control" name="rr" value="{{$inventaris->RR}}">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>RB</label>
-                                        <input class="form-control"  name="rb" value="">
+                                        <input class="form-control"  name="rb" value="{{$inventaris->RB}}">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>KET</label>
-                                <input class="form-control" name="ket">
+                                <input class="form-control" name="ket" value="{{$inventaris->ket}}">
                                 <p class="help-block"></p>
                             </div>
                             <div class="form-group">
                                 <label>LOKASI</label>
-                                <input class="form-control" required="true" name="lokasi">
+                                <input class="form-control" required="true" name="lokasi" value="{{$inventaris->lokasi}}">
                                 <p class="help-block">Contoh: RPK</p>
                             </div>
                             
                                 <div class="form-group">
                                     <label>Input Gambar <strong style="color:red">*optional</strong></label>
-                                    <input type="file" name="image" accept="image/*"  onchange="tampilkanPreview(this,'preview')" value=""/>
+                                    <input type="file" name="image" accept="image/*"  onchange="tampilkanPreview(this,'preview')" value="{{$inventaris->gambar}}">
                                 </div>
-                                <img id="preview" width="220px"/>
+                                <img src="{{asset('imageInventaris/' .$inventaris->gambar) }}" id="preview" width="220px" />
                             
                             <input type="hidden" name="roles_id" value="{{Auth::user()->roles}}" >
                             <!-- Modal Footer -->
-                            
+                         
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success">
-                                        Tambah
+                                    <button type="submit" class="btn btn-primary">
+                                        Simpan
                                     </button>
                                 </div>
 

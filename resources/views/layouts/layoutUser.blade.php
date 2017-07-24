@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<html lang="{{ config('app.locale') }}">
 <head>
 
     <meta charset="utf-8">
@@ -21,19 +20,32 @@
     <!-- Custom Fonts -->
     <link href="{{asset('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 
+    {{-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> --}}
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
 
     <!-- Styles -->
 
-    <!-- Scripts -->
-    <script>
-        window.Laravel = {!! json_encode([
-            'csrfToken' => csrf_token(),
-        ]) !!};
-    </script>
 
+    <!-- navbar active class-->
+    @php
+    if (!function_exists('classActivePath')) {
+        function classActivePath($path)
+        {
+            $path = explode('.', $path);
+            $segment = 1;
+            foreach($path as $p) {
+                if((request()->segment($segment) == $p) == false) {
+                    return '';
+                }
+                $segment++;
+            }
+            return ' active';
+        }
+    }
+    @endphp
 </style>
 @yield('header')
 </head>
@@ -54,87 +66,7 @@
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu message-dropdown">
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong>John Smith</strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong>John Smith</strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong>John Smith</strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-footer">
-                            <a href="#">Read All New Messages</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ Auth::user()->name }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -147,64 +79,106 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <a href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                                <i class="fa fa-fw fa-power-off"></i>Logout
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                              <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+                            </form>
                         </li>
                     </ul>
                 </li>
             </ul>
+            @if(Auth::user()->roles=='sarpras')
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="{!! classActivePath('user') !!}">
+                        <a href="/user"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="{!! classActivePath('inventaris') !!}">
+                        <a href="/inventaris"><i class="fa fa-fw fa-edit"></i> Inventaris Sarpras</a>
+                    </li>
+                    <li class="{!! classActivePath('tabelInventaris') !!}">
+                        <a href="/tabelInventaris"><i class="fa fa-fw fa-table"></i> Tables</a>
+                    </li>
+
+                </ul>
+            </div>
+            @elseif(Auth::user()->roles=='kebun')
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
                         <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
+
                     <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
-                    </li>
-                    <li>
-                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> Tables</a>
+                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> Inventaris Kebun</a>
                     </li>
                     <li>
                         <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
                     </li>
+                </ul>
+            </div>
+            @elseif(Auth::user()->roles=='kandang')
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="active">
+                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+
                     <li>
-                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
+                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> Inventaris Kandang</a>
                     </li>
                     <li>
-                        <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
-                    </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo" class="collapse">
-                            <li>
-                                <a href="#">Dropdown Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Dropdown Item</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
-                    </li>
-                    <li>
-                        <a href="index-rtl.html"><i class="fa fa-fw fa-dashboard"></i> RTL Dashboard</a>
+                        <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
                     </li>
                 </ul>
             </div>
+            @elseif(Auth::user()->roles=='LAB')
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="active">
+                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+
+                    <li>
+                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> Inventaris LAB</a>
+                    </li>
+                    <li>
+                        <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
+                    </li>
+                </ul>
+            </div>
+            @endif
             <!-- /.navbar-collapse -->
         </nav>
         @yield('content')
             <!-- jQuery -->
+
+</body>
 <script src="{{asset('js/jquery.js')}}"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 
-<!-- Morris Charts JavaScript -->
+{{-- <!-- Morris Charts JavaScript -->
 <script src="{{asset('js/plugins/morris/raphael.min.js')}}"></script>
 <script src="{{asset('js/plugins/morris/morris.min.js')}}"></script>
-<script src="{{asset('js/plugins/morris/morris-data.js')}}"></script>
+<script src="{{asset('js/plugins/morris/morris-data.js')}}"></script> --}}
+
+
+<!--datatables-->
+<script src="https://datatables.yajrabox.com/js/jquery.min.js"></script>
+<script src="https://datatables.yajrabox.com/js/bootstrap.min.js"></script>
+<script src="https://datatables.yajrabox.com/js/jquery.dataTables.min.js"></script>
+<script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -224,5 +198,85 @@
         $('label[for="password"]').removeClass('selected');
     });
 </script>
-</body>
+{{-- <script src="//code.jquery.com/jquery.js"></script> --}}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+$.fn.dataTable.ext.errMode = 'none';
+</script>
+
+
+<script type="text/javascript">
+   $(function() {
+        $('#users-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: 'http://localhost:8000/tabelInventaris/get_datatable',
+            columns: [
+            {data: 'id_inventaris', name: 'id_inventaris', 'className': 'text-center'},
+            {data: 'kode_barang', name: 'kode_barang', 'className': 'text-center'},
+            {data: 'nama_barang', name: 'nama_barang', 'className': 'text-center'},
+            {data: 'merk_barang', name: 'merk_barang', 'className': 'text-center'},
+            {data: 'tahun_barang', name: 'tahun_barang', 'className': 'text-center'},
+            {data: 'jumlah_barang', name: 'jumlah_barang', 'className': 'text-center'},
+            {data: 'B', name: 'B', 'className': 'text-center'},
+            {data: 'RR', name: 'RR', 'className': 'text-center'},
+            {data: 'RB', name: 'RB', 'className': 'text-center'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
+        });
+    });
+
+</script>
+    <!-- Scripts -->
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!};
+    </script>
+<script>
+            function tampilkanPreview(gambar,idpreview){
+//                membuat objek gambar
+                var gb = gambar.files;
+                
+//                loop untuk merender gambar
+                for (var i = 0; i < gb.length; i++){
+//                    bikin variabel
+                    var gbPreview = gb[i];
+                    var imageType = /image.*/;
+                    var preview=document.getElementById(idpreview);            
+                    var reader = new FileReader();
+                    
+                    if (gbPreview.type.match(imageType)) {
+//                        jika tipe data sesuai
+                        preview.file = gbPreview;
+                        reader.onload = (function(element) { 
+                            return function(e) { 
+                                element.src = e.target.result; 
+                            }; 
+                        })(preview);
+ 
+    //                    membaca data URL gambar
+                        reader.readAsDataURL(gbPreview);
+                    }else{
+//                        jika tipe data tidak sesuai
+                        alert("Type file tidak sesuai. Khusus image.");
+                    }
+                   
+                }    
+            }
+
+</script>
+<script>
+
+    function calculate() {
+    var myBox1 = document.getElementById('box1').value; 
+    var myBox2 = document.getElementById('box2').value;
+    var result = document.getElementById('result'); 
+    var myResult = myBox1 * myBox2;
+    result.innerHTML = myResult;
+
+}
+</script>
+
 </html>

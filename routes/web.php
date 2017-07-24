@@ -12,19 +12,24 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::resource('user','UserController');
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/asd', function () {
-    return view('index');
-});
+// Route::get('/table', function () {
+//     return view('tables');
+// });
+// Route::get('/form', function () {
+//     return view('forms');
+// });
 
-Route::get('/2', function () {
-    return view('tes.kinerja');
-});
+Route::resource('inventaris','InventarisController');
+Route::get('inventarisDelete/{id}','InventarisController@destroy');
+// Route::resource('tabelnventaris','TabelInventarisController');
+
+Route::get('/tabelInventaris','TabelInventarisController@index');
+Route::get('/tabelInventaris/get_datatable','TabelInventarisController@get_datatable');

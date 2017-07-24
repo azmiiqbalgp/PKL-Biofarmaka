@@ -23,7 +23,7 @@
             <center><h1 id="title" class="hidden"><span id="logo">BIOFARMAKA<span></span></span></h1></center>
             <center><img src="{{URL::asset('/images/logoipb.png')}}" alt="gambar" class="bg hidden-print" height="80" width="120" /></center>
         </div>
-        <div class="login-box animated fadeInUp">
+{{--         <div class="login-box animated fadeInUp">
             <div class="box-header">
                 <h2>Log In</h2>
             </div>
@@ -38,7 +38,7 @@
             <button type="submit">Sign In</button>
             <br/>
             <a href="#"><p class="small">Forgot your password?</p></a>
-        </div>
+        </div> --}}
     </div>
 </body>
 
