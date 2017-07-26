@@ -30,7 +30,7 @@ class User extends Authenticatable
     ];
    public function hasInventaris()
    {
-        return $this->hasMany('App\Inventaris');
+        return $this->hasMany('App\Inventaris','roles_id');
 
    }
 }

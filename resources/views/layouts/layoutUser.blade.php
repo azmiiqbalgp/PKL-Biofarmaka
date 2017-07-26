@@ -20,15 +20,12 @@
     <!-- Custom Fonts -->
     <link href="{{asset('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 
-    {{-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> --}}
-
+    
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
 
     <!-- Styles -->
-
-
     <!-- navbar active class-->
     @php
     if (!function_exists('classActivePath')) {
@@ -66,7 +63,7 @@
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ Auth::user()->name }} <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{auth()->user()->name }}<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -103,7 +100,7 @@
                         <a href="/inventaris"><i class="fa fa-fw fa-edit"></i> Inventaris Sarpras</a>
                     </li>
                     <li class="{!! classActivePath('tabelInventaris') !!}">
-                        <a href="/tabelInventaris"><i class="fa fa-fw fa-table"></i> Tables</a>
+                        <a href="/tabelInventaris/{{ Auth::user()->roles }}"><i class="fa fa-fw fa-table"></i> Tables</a>
                     </li>
 
                 </ul>
@@ -168,65 +165,15 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 
-{{-- <!-- Morris Charts JavaScript -->
+<!-- Morris Charts JavaScript -->
 <script src="{{asset('js/plugins/morris/raphael.min.js')}}"></script>
 <script src="{{asset('js/plugins/morris/morris.min.js')}}"></script>
-<script src="{{asset('js/plugins/morris/morris-data.js')}}"></script> --}}
+<script src="{{asset('js/plugins/morris/morris-data.js')}}"></script>
 
 
-<!--datatables-->
-<script src="https://datatables.yajrabox.com/js/jquery.min.js"></script>
-<script src="https://datatables.yajrabox.com/js/bootstrap.min.js"></script>
-<script src="https://datatables.yajrabox.com/js/jquery.dataTables.min.js"></script>
-<script src="https://datatables.yajrabox.com/js/datatables.bootstrap.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#logo').addClass('animated fadeInDown');
-        $("input:text:visible:first").focus();
-    });
-    $('#username').focus(function() {
-        $('label[for="username"]').addClass('selected');
-    });
-    $('#username').blur(function() {
-        $('label[for="username"]').removeClass('selected');
-    });
-    $('#password').focus(function() {
-        $('label[for="password"]').addClass('selected');
-    });
-    $('#password').blur(function() {
-        $('label[for="password"]').removeClass('selected');
-    });
-</script>
-{{-- <script src="//code.jquery.com/jquery.js"></script> --}}
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
 $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
 $.fn.dataTable.ext.errMode = 'none';
-</script>
-
-
-<script type="text/javascript">
-   $(function() {
-        $('#users-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: 'http://localhost:8000/tabelInventaris/get_datatable',
-            columns: [
-            {data: 'id_inventaris', name: 'id_inventaris', 'className': 'text-center'},
-            {data: 'kode_barang', name: 'kode_barang', 'className': 'text-center'},
-            {data: 'nama_barang', name: 'nama_barang', 'className': 'text-center'},
-            {data: 'merk_barang', name: 'merk_barang', 'className': 'text-center'},
-            {data: 'tahun_barang', name: 'tahun_barang', 'className': 'text-center'},
-            {data: 'jumlah_barang', name: 'jumlah_barang', 'className': 'text-center'},
-            {data: 'B', name: 'B', 'className': 'text-center'},
-            {data: 'RR', name: 'RR', 'className': 'text-center'},
-            {data: 'RB', name: 'RB', 'className': 'text-center'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ]
-        });
-    });
-
 </script>
     <!-- Scripts -->
     <script>
@@ -268,15 +215,10 @@ $.fn.dataTable.ext.errMode = 'none';
 
 </script>
 <script>
+var form = document.getElementById("redirect");
 
-    function calculate() {
-    var myBox1 = document.getElementById('box1').value; 
-    var myBox2 = document.getElementById('box2').value;
-    var result = document.getElementById('result'); 
-    var myResult = myBox1 * myBox2;
-    result.innerHTML = myResult;
-
-}
+document.getElementById("toform").addEventListener("click", function () {
+  form.submit();
+});
 </script>
-
 </html>

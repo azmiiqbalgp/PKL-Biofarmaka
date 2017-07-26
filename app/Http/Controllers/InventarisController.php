@@ -115,7 +115,8 @@ class InventarisController extends Controller
      */
     public function edit($id)
     {
-        //
+        $inventaris=Inventaris::find($id);
+        return view('formsEdit',['inventaris' => $inventaris]);
     }
 
     /**

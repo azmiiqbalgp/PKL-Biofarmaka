@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Inventaris;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+use Yajra\Datatables\Facades\Datatables;
+use Auth;
 class UserController extends Controller
 {
     /**
@@ -13,7 +17,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $sarpras= Inventaris::where(['roles_id'=>'sarpras'])->count();
+        $kebun= Inventaris::where(['roles_id'=>'kebun'])->count();
+        // if($sarpras>$kebun){
+        //     $result=$kebun;
+        // }
+        return view('dashboard',['sarpras' => $sarpras]);
     }
 
     /**

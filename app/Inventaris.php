@@ -12,7 +12,7 @@ class Inventaris extends Model
    
    public function inventaris()
    {
-        return $this->belongsTo('App\User','roles_id');
+        return $this->belongsTo('App\User','id_inventaris');
 
    }
 }

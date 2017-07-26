@@ -1,5 +1,5 @@
 @extends('layouts/layoutUser')
-@section('title','Table Inventaris')
+@section('title','Search Result')
 @section('content')
 <body>
         <div id="page-wrapper">
@@ -22,7 +22,7 @@
                         </ol>
                     </div>
                 </div>
-                @include('flash::message')
+                 @include('flash::message')
                 <!-- /.row -->
           <div class="panel panel-default">
               <div class="panel-heading">
@@ -94,7 +94,7 @@
                 </table>
               </div>
             </div>
-            <center>{{ $inventariss->links() }}</center>
+            {{-- <center>{{ $inventariss->links() }}</center> --}}
 @foreach($inventariss as $inventaris)
   <!-- Modal Detail Paket-->
     <div class="modal fade in" id="ModalInventaris{{$inventaris->id_inventaris}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" value="">
@@ -170,17 +170,13 @@
                       <td align="left"><b>RR : </b>{{$inventaris->RR}}<td>
                     </tr>
                     <tr>
+                      
                       <td align="left"><b>RB : </b>{{$inventaris->RB}}</td>
                     </tr>
                     <tr>
                       <td align="center" colspan="2">
                       <b>Foto_barang</b><br><br>
-                      @if($inventaris->gambar !=null)
-                        <a href="{{url('/image', $inventaris->gambar)}}" target="_blank"><img class="img-rounded img-responsive" src="{{asset('imageInventaris/' .$inventaris->gambar) }}" id="" alt="inventaris" width="700" height="auto"></a>
-                      @else
-                        <img class="img-rounded img-responsive" src="{{asset('image/noimage.png') }}" id="" alt="inventaris" width="200" height="auto">
-                      @endif
-                      </td>
+                      <a href="{{url('/image', $inventaris->gambar)}}" target="_blank"><img class="img-rounded img-responsive" src="{{asset('imageInventaris/' .$inventaris->gambar) }}" id="" alt="inventaris" width="700" height="auto"></a></td>
                     </tr>
                        
                   </table>

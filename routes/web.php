@@ -1,5 +1,6 @@
 <?php
-
+use App\Inventaris;
+use Illuminate\Support\Facades\Input;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,17 +20,28 @@ Route::resource('user','UserController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-// Route::get('/table', function () {
-//     return view('tables');
-// });
-// Route::get('/form', function () {
-//     return view('forms');
-// });
-
 Route::resource('inventaris','InventarisController');
+Route::resource('inventaris', 'InventarisController', ['parameters' => [
+    'id' => 'id_inventaris'
+]]);
+Route::resource('tabelInventaris', 'TabelInventarisController', ['parameters' => [
+    'id' => 'roles'
+]]);
 Route::get('inventarisDelete/{id}','InventarisController@destroy');
-// Route::resource('tabelnventaris','TabelInventarisController');
-
-Route::get('/tabelInventaris','TabelInventarisController@index');
-Route::get('/tabelInventaris/get_datatable','TabelInventarisController@get_datatable');
+Route::any('/searchInventaris',function(){
+    $q = Input::get ( 'q' );
+    $inventaris = Inventaris::where('kode_barang','LIKE','%'.$q.'%')->orWhere('nama_barang','LIKE','%'.$q.'%')->orWhere('id_inventaris','LIKE','%'.$q.'%')->orWhere('merk_barang','LIKE','%'.$q.'%')->orWhere('sumber_dana','LIKE','%'.$q.'%')->orWhere('lokasi','LIKE','%'.$q.'%')->get();
+    if(count($inventaris) > 0)
+        return view('tablesInventarisSearch',['inventariss'=>$inventaris])->withDetails($inventaris)->withQuery ( $q );
+    else
+        flash('No Data Found')->error();
+        return view ('tablesInventarisSearch',['inventariss'=>$inventaris]);
+});
+Route::get('/payments/excel', 
+[
+  'as' => 'export.excel',
+  'uses' => 'InventarisExcelController@excel'
+]);
+Route::get('/image/{id}', function ($id) {
+    return view('image', ['id'=>$id]);
+});
